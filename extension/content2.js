@@ -25,7 +25,7 @@ fetch(`http://ip-api.com/json/${url.split('/')[2]}`)
   .then(data1 => document.getElementById('myip').textContent ="IPv4: "+(`${data1.query}`))
   .catch(error => console.log('Error:', error));
 //        end
-    fetch(`http://127.0.0.1:8000/api/${url}`, {
+    fetch(`https://phishing-detector-8ttc.onrender.com/api/${url}`, {
 
        method: 'GET',
 
