@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-qu6s^p5uje3^nacrr^3pbicirysgv1%kam7mf7g3s^^pt04x%@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://phishing-detector-8ttc.onrender.com']
 
 
 # Application definition
