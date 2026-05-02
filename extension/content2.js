@@ -1,91 +1,80 @@
-// content.js
-
-//var btn=document.getElementById('popup-button');
+// content2.js
 
 function anotherFunction(url) {
     console.log(`The URL is: ${url}`);
-    // do something with the URL value here
-    const scriptPath = '/path/to/your/script.py';
-    var res = document.getElementById('dmurl').textContent = "Domain: "+url.split('/')[2];
-//    modify
-//let ipAddress;
-//
-//fetch(`https://api.ipify.org?format=json`)
-//  .then(response => response.json())
-//  .then(data => {
-//    ipAddress = data.ip;
-//    console.log(`${url}: ${ipAddress}`);
-//  })
-//  .catch(error => console.log('Error:', error));
-///////////////////////
 
+    // Show domain
+    document.getElementById('dmurl').textContent = "Domain: " + url.split('/')[2];
 
-fetch(`http://ip-api.com/json/${url.split('/')[2]}`)
-  .then(resp => resp.json())
-  .then(data1 => document.getElementById('myip').textContent ="IPv4: "+(`${data1.query}`))
-  .catch(error => console.log('Error:', error));
-//        end
+    // Fetch IP address
+    fetch(`http://ip-api.com/json/${url.split('/')[2]}`)
+        .then(resp => resp.json())
+        .then(data1 => {
+            document.getElementById('myip').textContent = "IPv4: " + data1.query;
+        })
+        .catch(error => console.log('IP Error:', error));
+
+    // Call backend API (Render)
     fetch(`https://phishing-detector-nhel.onrender.com/api/${url}`, {
-
-       method: 'GET',
-
-      // headers: {
-      //'Content-Type': 'application/json'
-       //},
-       //body: JSON.stringify({ script_path: scriptPath })
+        method: 'GET',
     })
-    .then(response => response.json())
+    .then(response => response.json())   // ✅ FIXED
     .then(data => {
-        const res = data.result;
-        document.getElementById('result').textContent = res;
-    if(res!=""){
-      setTimeout(function(){
-        const myimg = document.getElementById("myimg");
-        myimg.style.display="none";
-        },1);
-        if(res=="Website is Phising"){
-        document.getElementById('result1').textContent = data
-        const alert = document.getElementById("alert");
-        alert.style.display="block";}
-        else{
-        document.getElementById('result2').textContent = data
-        const safe = document.getElementById("safe");
-        safe.style.display="block";}
-        }
+        console.log("API Response:", data);
 
+        const res = data.result;   // ✅ Extract result string
+
+        // Show result
+        document.getElementById('result').textContent = res;
+
+        if (res !== "") {
+            // Hide loader
+            setTimeout(() => {
+                document.getElementById("myimg").style.display = "none";
+            }, 300);
+
+            if (res === "Website is Phising") {
+                document.getElementById('result1').textContent = res;
+                document.getElementById("alert").style.display = "block";
+                document.getElementById("safe").style.display = "none";
+            } else {
+                document.getElementById('result2').textContent = res;
+                document.getElementById("safe").style.display = "block";
+                document.getElementById("alert").style.display = "none";
+            }
+        }
     })
     .catch(error => {
-      console.log(error);
+        console.log('API Error:', error);
+        document.getElementById("myimg").style.display = "none";
+        document.getElementById('result').textContent = "Error fetching result";
     });
+}
 
-  }
 
-
+// Get active tab URL
 function runScript() {
-
-    chrome.tabs.query({ active: true }, tabs => {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
         const url = tabs[0].url;
         anotherFunction(url);
+    });
+}
 
-      });
 
-      
+// Button click handler
+const Button = document.getElementById('popup-button');
+const myimg = document.getElementById("myimg");
 
-   
-  }
+Button.addEventListener("click", () => {
+    console.log("Scan started...");
+    myimg.style.display = "block";
 
-///////////////////////
-   const Button = document.getElementById('popup-button');
-   const myimg = document.getElementById("myimg");
-   Button.addEventListener("click", () => {
-   myimg.style.display="block";
-   console.log("hello")
-   runScript()
+    // Reset UI before scan
+    document.getElementById('result').textContent = "";
+    document.getElementById('result1').textContent = "";
+    document.getElementById('result2').textContent = "";
+    document.getElementById("alert").style.display = "none";
+    document.getElementById("safe").style.display = "none";
+
+    runScript();
 });
-
-
-
-///////////////////
-//document.getElementById('popup-button').addEventListener("click", () => {
-//    console.log("hello")
-//    runScript(); });
