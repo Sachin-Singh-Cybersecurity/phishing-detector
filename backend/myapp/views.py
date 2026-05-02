@@ -24,9 +24,9 @@ def run_abx(request, url):
     features = featureExtraction(url)
     p = sum(features)
     if p >= 9:
-        return Response('Website is Phising')
+        return Response({"result": "Website is Phising"})
     else:
-        return Response('Website is safe to visit')
+        return Response({"result": "Website is safe to visit"})
 
 
 """
@@ -63,7 +63,7 @@ def run_abx(request, url):
     # if urlfe.domainEnd(domain):
     #     pishing_level += 1
 
-    # response = requests.get(url)
+    # response = requests.get(url, timeout=5)
     #
     # if urlfe.iframe(response):
     #     pishing_level += 1
@@ -500,7 +500,7 @@ def featureExtraction(url):
 
     # HTML & Javascript based features
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
     except:
         response = ""
 
