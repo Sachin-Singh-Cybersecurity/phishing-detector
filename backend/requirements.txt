@@ -4,3 +4,4 @@ django-cors-headers
 requests
 beautifulsoup4
 python-whois
+gunicorn
