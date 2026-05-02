@@ -25,7 +25,7 @@ fetch(`http://ip-api.com/json/${url.split('/')[2]}`)
   .then(data1 => document.getElementById('myip').textContent ="IPv4: "+(`${data1.query}`))
   .catch(error => console.log('Error:', error));
 //        end
-    fetch(`https://phishing-detector-8ttc.onrender.com/api/${url}`, {
+    fetch(`https://phishing-detector-nhel.onrender.com/api/${url}`, {
 
        method: 'GET',
 
@@ -36,9 +36,8 @@ fetch(`http://ip-api.com/json/${url.split('/')[2]}`)
     })
     .then(response => response.json())
     .then(data => {
-      
-      console.log(data);
-     var res = document.getElementById('result').textContent = data;
+        const res = data.result;
+        document.getElementById('result').textContent = res;
     if(res!=""){
       setTimeout(function(){
         const myimg = document.getElementById("myimg");
